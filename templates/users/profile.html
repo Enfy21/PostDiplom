@@ -1,0 +1,79 @@
+{% extends 'post/base.html' %}
+{% block title %}Профиль{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% load static %}
+<div class="flex justify-center w-fill bg-base-200" tabindex="0">
+    <div class="flex flex-row justify-center flex-wrap w-6/12 p-4">
+        <div class="card mb-8 mt-1 bg-base-100">
+            <div class="card-body">
+                <span class="h4">Профиль</span>
+                <label for="my_modal_7" class="btn">Редактировать профиль</label>
+<!--                <button type="button" class="btn btn-dark float-right btn-sm" data-toggle="modal"-->
+<!--                        data-target="#exampleModal" onclick="my_modal_7.showModal()">-->
+<!--                    Редактировать профиль-->
+<!--                </button>-->
+                <hr>
+                <div class="flex flex-row m-3">
+                    <div class="flex flex-column mr-6 w-3/12">
+                        <img class="mask mask-hexagon mb-6" src="{{ user.profilemodel.image.url }}" alt="profile-img">
+                    </div>
+                    <div class="flex flex-row flex-wrap place-items-start">
+                        <p> Имя: {{ user.username }} <br>
+                            Email: {{ user.email }} <br>
+                            Пол: Мужской <br>
+                            Возраст: 19 лет <br>
+                            Статус: новичок <br>
+                        </p>
+                    </div>
+                </div>
+                <div class="divider">Ваши посты</div>
+            </div>
+        </div>
+
+        {% for post in posts %}
+        <div class="card mb-8 mt-1 bg-base-100">
+            <div class="flex flex-column p-8">
+                <div class="flex flex-row flex-wrap w-4/12 content-start justify-items-start">
+                    <div class="avatar mr-6 mb-6">
+                        <div class="mask mask-squircle w-32 h-32">
+                            <img src="{{ post.author.profilemodel.image.url }}"/>
+                        </div>
+                    </div>
+                    <small>{{ post.date_created }} <br>
+                        Пользователь: {{ post.author.username }}</small>
+                </div>
+                <div class="flex flex-col w-full content-start flex-wrap ">
+                    <h2 class="text-2xl"><b><a href="{% url 'blog-post-detail' post.id %}">{{ post.title }}</a></b>
+                    </h2>
+                    <div class="divider"></div>
+                    <p class="">
+                        {{ post.content }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<input type="checkbox" id="my_modal_7" class="modal-toggle"/>
+<div class="modal">
+    <div class="modal-box">
+        <h3 class="text-lg font-bold">Редактирование профиля</h3>
+        <div class="flex align-items-center">
+            <img class="w-72" src="{{ user.profilemodel.image.url }}" alt="">
+        </div>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ u_form|crispy }}
+            {{ p_form|crispy }}
+            <div class="modal-footer mt-3">
+                <button type="submit" class="btn btn-dark btn-sm w-full">Сохранить</button>
+            </div>
+    </div>
+    <label class="modal-backdrop" for="my_modal_7">Close</label>
+</div>
+
+
+{% endblock %}

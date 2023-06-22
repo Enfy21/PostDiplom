@@ -1,0 +1,58 @@
+{% extends 'post/base.html' %}
+{% block title %}Редактирование поста{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% load static %}
+<div class="flex justify-center w-fill bg-base-200" tabindex="0">
+    <div class="flex flex-row justify-center flex-wrap w-6/12 p-4">
+        <div class="card mb-8 mt-1 bg-base-100">
+            <div class="card-body">
+                <div class="flex flex-column p-8">
+
+                    <div class="flex flex-row flex-wrap w-4/12 content-start">
+                        <div class="avatar mr-6 mb-6">
+                            <div class="mask mask-squircle w-32 h-32">
+                                <img src="{{ post.author.profilemodel.image.url }}"/>
+                            </div>
+                        </div>
+                        <small>{{ post.date_created }} <br>
+                            Пользователь: <a href="{% url 'users-profile-pk' post.author.pk %}"><b>{{ post.author.username }}</b></a></small>
+                    </div>
+
+                    <div class="flex flex-col w-full content-start flex-wrap ">
+                        <h2 class="text-2xl"><b>{{ post.title }}</b></h2>
+                        <div class="divider"></div>
+                        <p class="">
+                            {{ post.content }}
+                        </p>
+                    </div>
+                </div>
+                <div class="collapse bg-base-100 p-3">
+                    <input type="checkbox"/>
+                    <div class="collapse-title text-xl font-medium">
+                        Коментарии: {{ post.comment_count }}
+                    </div>
+
+                    {% for comment in post.comments %}
+                    <div class="chat chat-start">
+                        <div class="chat-header">
+                            {{ comment.user.username }}
+                            <time class="text-xs opacity-50">2 hours ago</time>
+                        </div>
+                        <div class="chat-bubble"> {{ comment.content }}</div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ c_form|crispy }}
+                    <input class="btn btn-dark btn-sm mt-3" type="submit" value="Комментировать">
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+{% endblock %}

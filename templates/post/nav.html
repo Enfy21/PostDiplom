@@ -1,0 +1,84 @@
+<!--<nav class="navbar bg-dark data-bs-theme=dark navbar-expand-lg fixed-top">-->
+<!--    <div class="container">-->
+
+<!--        <a class="navbar-brand text-white" href="{% url 'blog-index' %}">Пост</a>-->
+<!--        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"-->
+<!--                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
+<!--            <span class="navbar-toggler-icon"></span>-->
+<!--        </button>-->
+
+<!--        <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
+<!--            {% if request.user.is_authenticated %}-->
+<!--            <ul class="navbar-nav ml-auto">-->
+<!--                <li class="pl-3 pr-3 pt-1 pb-1 nav-item active">-->
+<!--                    <a type="button" class="btn btn-light nav-link text-black" href="{% url 'blog-index' %}">Лента <span-->
+<!--                            class="sr-only">(current)</span></a>-->
+<!--                </li>-->
+<!--                <li class="p-1 nav-item active">-->
+<!--                    <a class="btn btn-info nav-link text-white" href="{% url 'users-profile' %}">Профиль <span-->
+<!--                            class="sr-only">(current)</span></a>-->
+<!--                </li>-->
+<!--                <li class="p-1 nav-item active">-->
+<!--                    <a class="btn btn-light nav-link text-black " href="{% url 'users-logout' %}">Выйти</a>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--            {% else %}-->
+<!--            <ul class="navbar-nav ml-auto">-->
+<!--                <li class="nav-item active p-1">-->
+<!--                    <a class="btn btn-light nav-link text-black" href="{% url 'users-sign-up' %}">Зарегистрироваться-->
+<!--                        <span-->
+<!--                                class="sr-only">(current)</span></a>-->
+<!--                </li>-->
+<!--                <li class="nav-item p-1">-->
+<!--                    <a class="btn btn-info nav-link text-white" href="{% url 'users-login' %}">Войти</a>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--            {% endif %}-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</nav>-->
+
+
+<div class="navbar bg-base-100 h-32">
+    <div class="flex-1">
+        <a class="btn btn-ghost normal-case text-xl" href="{% url 'blog-index' %}">ПОСТ</a>
+    </div>
+    <div class="flex-none gap-3">
+        {% if request.user.is_authenticated %}
+        <a class="btn mr-3" href="{% url 'blog-index' %}">Лента </a>
+        <div class="form-control">
+            <input type="text" placeholder="Поиск" class="input input-bordered w-24 md:w-auto"/>
+        </div>
+        <div class="dropdown dropdown-end" style="z-index: 1">
+            <label tabindex="1" class="btn btn-ghost btn-circle avatar">
+                <div class="w-32 rounded">
+                    <img id="user-img" src=""/>
+                </div>
+            </label>
+            <ul tabindex="1" class="mt-3 p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
+                <li><a href="{% url 'users-profile' %}">Профиль </a></li>
+                <li><a class="justify-between">Настройки <span class="badge">Скоро...</span> </a></li>
+                <li><a href="{% url 'users-logout' %}">Выход</a></li>
+            </ul>
+        </div>
+        {% else %}
+        <a class="btn mr-3" href="{% url 'users-sign-up' %}">Зарегистрироваться</a>
+        <a class="btn mr-3" href="{% url 'users-login' %}">Войти</a>
+        {% endif %}
+    </div>
+</div>
+
+{% if request.user.is_authenticated %}
+<script type="text/javascript">
+    window.onload = function () {
+        fetch("{% url 'users-img' pk_username=request.user.pk %}")
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            document.getElementById("user-img").src=data.img;
+            console.log(data.img);
+        });
+    }
+</script>
+{% endif %}

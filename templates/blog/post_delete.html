@@ -1,0 +1,26 @@
+{% extends 'post/base.html' %}
+{% block title %}Удаление поста{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% load static %}
+<div class="">
+    <div class="container">
+        <div class="row mt-5 pt-3">
+            <div class="col-md-8 offset-md-2">
+                <div class="card border-dark bg-light  my-3 shadow">
+                    <div class="card-body">
+                        <div class="alert alert-danger">
+                            Вы хотите удалить пост?
+                        </div>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <a class="btn btn-dark btn-sm" href="{% url 'blog-post-detail' post.id %}">Отмена</a>
+                            <input class="btn btn-dark btn-sm" type="submit" value="Принять">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

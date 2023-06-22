@@ -1,0 +1,17 @@
+{% extends 'post/base.html' %}
+{% block title %}Страница редактирования{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% load static %}
+<div class="flex justify-center align-center mt-3">
+    <div class="card w-2/3 shadow-xl">
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <input class="btn btn-dark btn-sm" type="submit" value="Сохранить">
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

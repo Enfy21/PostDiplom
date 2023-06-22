@@ -1,0 +1,54 @@
+{% extends 'post/base.html' %}
+{% block title %}Редактирование поста{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% load static %}
+<div class="flex justify-center w-fill bg-base-200" tabindex="0">
+    <div class="flex flex-row justify-center flex-wrap w-8/12 p-4">
+        <div class="card mb-8 mt-1 w-2/3 bg-base-100">
+            <div class="card-body bg-base-200">
+                {% for elem in chat %}
+                {% if elem.author == request.user %}
+                <div class="chat chat-end">
+                    <div class="chat-image avatar">
+                        <div class="w-10 rounded-full">
+                            <img src="{{ elem.author.profilemodel.image.url }}"/>
+                        </div>
+                    </div>
+                    <div class="chat-header">
+                        {{ elem.author.username }}
+                        <time class="text-xs opacity-50">{{ elem.date_created }}</time>
+                    </div>
+                    <div class="chat-bubble">{{ elem.message }}</div>
+                </div>
+                {% else %}
+                <div class="chat chat-start">
+                    <div class="chat-image avatar">
+                        <div class="w-10 rounded-full">
+                            <img src="{{ elem.author.profilemodel.image.url }}"/>
+                        </div>
+                    </div>
+                    <div class="chat-header">
+                        {{ elem.author.username }}
+                        <time class="text-xs opacity-50">{{ elem.date_created }}</time>
+                    </div>
+                    <div class="chat-bubble">{{ elem.message }}</div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+            <div class="flex p-6 w-full">
+                <form method="POST" enctype="multipart/form-data" class="w-full">
+                    {% csrf_token %}
+                    <textarea class="textarea textarea-bordered textarea-lg w-full"
+                              placeholder="Ваше сообщение" name="message"></textarea>
+                    <div class="modal-footer mt-3">
+                        <button type="submit" class="btn btn-dark btn-md w-full">Отправить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'post/base.html' %}
+{% block title %}Пост{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% load static %}
+<div class="flex justify-center w-fill" tabindex="0">
+
+    <div class="flex flex-row justify-center flex-wrap w-full p-4 bg-base-200">
+        <div class="flex w-2/12">
+            <div class="card bg-base-100 shadow-xl mr-3">
+                <h4 align="center">Ваши диалоги</h4>
+                {% for key, value in chats.items %}
+                <div class="flex flex-row flex-wrap content-start bg-base-200 p-2">
+                    <div class="avatar mr-2 mb-2">
+                        <div class="mask mask-squircle w-14 h-14">
+                            <img src="{{ value.profilemodel.image.url }}"/>
+                        </div>
+                    </div>
+                    <small>Пользователь : <br> <b>{{value.username }}</b></a></small>
+                    <br>
+                    <a class="btn btn-primary btn-block btn-sm" href="{% url 'chat' value.pk %}">Открыть чат</a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="flex w-3/12">
+            <div class="card bg-base-100 shadow-xl mr-3">
+                <div class="card-body">
+                    <h4 align="center">Создать пост</h4>
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <input class="btn btn-dark btn-block mt-3" type="submit" value="Опубликовать">
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="divider divider-horizontal "></div>
+        <div class="flex flex-col w-6/12">
+            {% for post in posts %}
+            <div class="card mb-8 mt-1 bg-base-100">
+                <div class="flex flex-column p-8">
+
+                    <div class="flex flex-row flex-wrap w-3/12 content-start justify-items-start">
+                        <div class="avatar mr-6 mb-6">
+                            <div class="mask mask-squircle w-32 h-32">
+                                <img src="{{ post.author.profilemodel.image.url }}"/>
+                            </div>
+                        </div>
+                        <small>{{ post.date_created }} <br>
+                            Пользователь: <a href="{% url 'users-profile-pk' post.author.pk %}">
+                                <b>{{post.author.username }}</b></a></small>
+                    </div>
+
+                    <div class="flex flex-col w-full content-start flex-wrap ">
+                        <h2 class="text-2xl"><b><a href="{% url 'blog-post-detail' post.id %}">{{ post.title }}</a></b>
+                        </h2>
+                        <div class="divider"></div>
+                        <p class="">
+                            {{ post.content }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

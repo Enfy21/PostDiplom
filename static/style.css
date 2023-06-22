@@ -1,0 +1,15 @@
+ body{
+    background: rgb(215,249,156);
+    background: radial-gradient(circle, rgba(215,249,156,1) 14%, rgba(47,141,255,1) 100%);
+    background-repeat: no-repeat;
+    background-size: cover;
+    }
+
+html,
+body {
+    min-height: 100%;
+}
+
+/*.page{*/
+/*    width: 100%;*/
+/*}*/
